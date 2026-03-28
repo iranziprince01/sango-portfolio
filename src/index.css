@@ -1,0 +1,33 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+
+  /* Warm plum + terracotta: artistic, human, editorial (not corporate blue) */
+  --color-primary: #3d2e4f;
+  --color-primary-deep: #2a2136;
+  --color-cta: #c4624d;
+  --color-cta-hover: #a34d3a;
+  /* Lighter terracotta; hero accents on dark backgrounds */
+  --color-cta-light: #e8a090;
+  --color-surface: #f6f1ea;
+  --color-canvas: #fcfaf7;
+  --color-ink: #2b2624;
+  --color-muted: #6b5f5b;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+  }
+}
