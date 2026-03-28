@@ -1,73 +1,110 @@
-# React + TypeScript + Vite
+# Fati Sango — Professional Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A single-page portfolio for **Fati Sango**, social entrepreneur and business analyst based in **Kigali, Rwanda**. The site presents her story, education, skills, ventures, and impact metrics with a clear editorial layout and accessible, performant front-end delivery.
 
-Currently, two official plugins are available:
+**Live positioning (site summary):** Designing practical, scalable systems that respond to community needs, with emphasis on social enterprise, AI-enabled service workflows, business analytics, CRM/MIS, and monitoring and evaluation.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Contents
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Section        | Purpose |
+|----------------|---------|
+| **Hero**       | Introduction, portrait, primary calls to action |
+| **Impact**     | Key quantitative highlights |
+| **About**      | Narrative, mission, core values |
+| **Education**  | Learning path (timeline) |
+| **Skills**     | Expertise grid and languages |
+| **Projects**   | Ventures and programmes with outbound links |
+| **Contact**    | Direct details and contact form (client-side demo) |
+| **Footer**     | Quick links, social profiles, copyright |
 
-## Expanding the ESLint configuration
+Copy and structured data (projects, education, metrics, social links) live in **`src/data/content.ts`** so updates do not require hunting through components.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Tech stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+| Layer | Choice |
+|--------|--------|
+| Runtime | **React 19** + **TypeScript** |
+| Build | **Vite 8** |
+| Styling | **Tailwind CSS v4** (`@tailwindcss/vite`, design tokens in `src/index.css`) |
+| Motion | **Framer Motion** (section entrances, hero, counters) |
+| SEO | **react-helmet-async** (title, meta, Open Graph) + **JSON-LD** `Person` schema in `App.tsx` |
+| Quality | **ESLint** (React Hooks, refresh rules) |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Fonts: **Montserrat** (Google Fonts), loaded from `index.html`.
+
+---
+
+## Implementation strategies
+
+1. **Separation of content and UI**  
+   All long-form copy, project CTAs, education rows, impact numbers, and social URLs are centralized in **`src/data/content.ts`** (and types in **`src/types`**). Components focus on layout, motion, and accessibility.
+
+2. **Design system**  
+   Brand colors (`primary`, `cta`, `surface`, `canvas`, `ink`) and **`cta-light`** for hero accents are defined in **`src/index.css`** under `@theme`, keeping typography and color consistent across sections.
+
+3. **Performance**  
+   Static Vite build; images use appropriate `loading`/`decoding` where applicable; hero assets prioritized for first paint.
+
+4. **Accessibility**  
+   Landmarks (`main`, `header`, `footer`, `nav`), heading hierarchy, `aria-labelledby` / `aria-label` on key regions, and visible focus paths on interactive elements.
+
+5. **SEO & sharing**  
+   Unique meta description per deployment via Helmet; Open Graph and Twitter card tags; structured data for person and location.
+
+6. **Responsive behavior**  
+   Mobile navigation (details/summary pattern), stacked grids on small viewports, multi-column layouts from `md`/`lg` breakpoints.
+
+7. **Contact form**  
+   Submissions are handled **in the browser only** in this demo (no backend). For production, replace the handler in **`Contact.tsx`** with your API or form service.
+
+---
+
+## Getting started
+
+**Requirements:** Node.js 20+ (recommended).
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open the URL shown in the terminal (typically `http://localhost:5173`).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start dev server with HMR |
+| `npm run build` | Typecheck + production build to `dist/` |
+| `npm run preview` | Serve `dist/` locally |
+| `npm run lint` | Run ESLint |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## Project layout (high level)
+
 ```
+public/           # Static assets (e.g. favicon, hero portrait)
+src/
+  components/     # Page sections and UI (Hero, About, Navbar, …)
+  data/content.ts # Copy, projects, education, links
+  types/          # TypeScript interfaces
+  index.css       # Tailwind import + @theme tokens
+  App.tsx         # Shell, Helmet, JSON-LD, section order
+```
+
+---
+
+## Deployment
+
+Output is a **static site** in **`dist/`** after `npm run build`. Host on any static host (Netlify, Vercel, GitHub Pages, S3, etc.). Set the site URL in your host’s environment if you add canonical or OG image URLs later.
+
+---
+
+## Credits
+
+**Fati Sango** — Social Entrepreneur \| Business Analyst, Kigali, Rwanda.
+
+Repository: **sango-portfolio** (private).
